@@ -45,15 +45,16 @@ class TodoActivity : AppCompatActivity() {
     private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
 
 
-        //ob
-        val items : List<TodoItem> by todoViewModel.todoItems.observeAsState(listOf()) // in the next steps we'll complete this
         //TodoEvent에서 Event를 전달받아 Viewmodel로 event 보낸다.
         //내부 observer가 Lifecycle.State.DESTROYED 일때 알아서 제거된다.
         TodoScreen(
-            items = items,
-            //이렇게도 사용할수 있다.
+            items = todoViewModel.todoItems,
+            currentlyEditing = todoViewModel.currentEditItem,
             onAddItem = todoViewModel::addItem, // in the next steps we'll complete this
-            onRemoveItem = { todoViewModel.removeItem(it) } // in the next steps we'll complete this
+            onRemoveItem = { todoViewModel.removeItem(it) }, // in the next steps we'll complete this
+            onStartEdit = todoViewModel::onEditItemSelected,
+            onEditItemChange = todoViewModel::onEditItemChange,
+            onEditDone = todoViewModel::onEditDone
         )
     }
 
